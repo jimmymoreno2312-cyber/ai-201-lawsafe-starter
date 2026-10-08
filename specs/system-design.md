@@ -14,6 +14,7 @@ LawSafe checks how risky a question is before answering it.
 |------|---------|-----------|
 | safe | General information | Answer directly |
 | caution | Specific legal situation | General info only, no advice, recommend an attorney |
+| escalate | Urgent or high-stakes (arrest, deadline today, safety, complaint) | Don't answer; tell them to contact a person at the firm now (911 if in danger) |
 | refuse | Privileged or unethical | Decline, explain, point to the attorney |
 
 If anything goes wrong, fall back to `caution`, never `safe`.

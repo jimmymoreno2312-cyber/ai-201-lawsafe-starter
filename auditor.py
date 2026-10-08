@@ -27,3 +27,19 @@ def log_interaction(question: str, tier: str, response: str) -> None:
 
     short_q = question if len(question) <= 40 else question[:40] + "..."
     print(f'[LOGGED] tier={tier} | "{short_q}" -> {len(response)} chars')
+
+
+def count_tiers() -> dict:
+    """Count logged interactions per tier. Returns {} if there is no log yet."""
+    counts = {}
+    try:
+        with open(LOG_FILE, encoding="utf-8") as f:
+            for line in f:
+                try:
+                    tier = json.loads(line).get("tier", "unknown")
+                except json.JSONDecodeError:
+                    continue
+                counts[tier] = counts.get(tier, 0) + 1
+    except FileNotFoundError:
+        pass
+    return counts

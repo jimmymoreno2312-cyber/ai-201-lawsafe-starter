@@ -1,7 +1,7 @@
 # LawSafe — Law Firm Safety Assistant
 ## AI201 Lab 4 Starter Repository
 
-LawSafe is a law firm Q&A tool with a safety classification layer. Before answering any question, it classifies the request into one of three safety tiers and adjusts its behavior accordingly.
+LawSafe is a law firm Q&A tool with a safety classification layer. Before answering any question, it classifies the request into one of four safety tiers (safe, caution, escalate, refuse) and adjusts its behavior accordingly.
 
 ## Setup
 
@@ -27,6 +27,14 @@ LawSafe is a law firm Q&A tool with a safety classification layer. Before answer
 | 1 | `safety.py` | `classify_safety_tier()` | Classify question into safe / caution / refuse |
 | 2 | `responder.py` | `generate_safe_response()` | Generate tier-appropriate response |
 | 3 | `auditor.py` | `log_interaction()` | Append interaction record to audit log |
+
+### Stretch goals implemented
+
+- **Fourth tier, `escalate`:** urgent or high-stakes situations (arrests, same-day deadlines,
+  safety threats, complaints about the firm) get a short reply sending the person to a human
+  at the firm right away.
+- **Tier counts:** the Ask tab shows how many logged questions fell into each tier, read from
+  `logs/audit.jsonl` and refreshed after every question.
 
 Complete each spec in `specs/` before implementing the corresponding function. A step-by-step checklist is in `MILESTONES.md`.
 
