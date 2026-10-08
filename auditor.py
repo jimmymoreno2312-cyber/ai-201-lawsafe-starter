@@ -3,25 +3,27 @@ import os
 from datetime import datetime, timezone
 from config import LOG_FILE
 
+MAX_QUESTION_CHARS = 300
+MAX_PREVIEW_CHARS = 200
+
 
 def log_interaction(question: str, tier: str, response: str) -> None:
-    """
-    Append a record of this interaction to the audit log.
+    """Append one JSON line describing this interaction to LOG_FILE."""
+    question = question or ""
+    response = response or ""
+    record = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "tier": tier,
+        "question": question[:MAX_QUESTION_CHARS],
+        "response_preview": response[:MAX_PREVIEW_CHARS],
+    }
+    try:
+        os.makedirs(os.path.dirname(LOG_FILE) or ".", exist_ok=True)
+        with open(LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(json.dumps(record, ensure_ascii=False) + "\n")
+    except OSError as e:
+        print(f"[LOG ERROR] could not write {LOG_FILE}: {e}")
+        return
 
-    TODO — Milestone 3:
-
-    Before writing code, complete specs/auditor-spec.md. Decide which fields to log,
-    how much text to keep, and what to do if logs/ doesn't exist.
-
-    Write one JSON object per line to LOG_FILE ("logs/audit.jsonl").
-
-    Required fields:
-      - "timestamp"        : ISO 8601 string
-      - "tier"             : the tier assigned to the question
-      - "question"         : truncate to 300 chars
-      - "response_preview" : first 200 characters of the response
-
-    Create logs/ if it doesn't exist. Also print a one-line summary, for example:
-      [LOGGED] tier=caution | "Should I settle or go to trial..." -> 212 chars
-    """
-    pass
+    short_q = question if len(question) <= 40 else question[:40] + "..."
+    print(f'[LOGGED] tier={tier} | "{short_q}" -> {len(response)} chars')
